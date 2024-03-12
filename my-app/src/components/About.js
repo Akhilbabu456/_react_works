@@ -1,13 +1,13 @@
 import React from 'react'
 
-export default function About() {
+export default function About(props) {
   return (
     <div className='container'>
         <h1 className='my-2'>About Us</h1>
       <div className="accordion" id="accordionExample">
-  <div className="accordion-item">
+  <div className="accordion-item" style={{backgroundColor: props.mode==="light"? "white" : "#042743" ,color: props.mode==="light" ? "black" : "white"}}>
     <h2 className="accordion-header">
-      <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+      <button className="accordion-button" style={{backgroundColor: props.mode==="light"? "white" : "#042743" ,color: props.mode==="light" ? "black" : "white"}} type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
         Analyze your text
       </button>
     </h2>
@@ -19,24 +19,24 @@ export default function About() {
   </div>
   <div className="accordion-item">
     <h2 className="accordion-header">
-      <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+      <button className="accordion-button collapsed" style={{backgroundColor: props.mode==="light"? "white" : "#042743" ,color: props.mode==="light" ? "black" : "white"}} type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
        Free to use
       </button>
     </h2>
     <div id="collapseTwo" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
-      <div className="accordion-body">
+      <div className="accordion-body" style={{backgroundColor: props.mode==="light"? "white" : "#042743" ,color: props.mode==="light" ? "black" : "white"}}>
         TextUtils is a free character tool that provides instant character count & word count statistics for a given text . TextUtils reports the number of words and characters. thus it is suitable for writing text with word/ character limits.
       </div>
     </div>
   </div>
   <div className="accordion-item">
     <h2 className="accordion-header">
-      <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+      <button className="accordion-button collapsed" style={{backgroundColor: props.mode==="light"? "white" : "#042743" ,color: props.mode==="light" ? "black" : "white"}} type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
         Browser Compatible
       </button>
     </h2>
     <div id="collapseThree" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
-      <div className="accordion-body">
+      <div className="accordion-body" style={{backgroundColor: props.mode==="light"? "white" : "#042743" ,color: props.mode==="light" ? "black" : "white"}}>
         This word counter software works in any web browser such as Chrome , firefox , internet explorer, safari , opera . It suits to count characters in facebook, blog , books , excel, document, pdf document , essays, etc.
       </div>
     </div>
