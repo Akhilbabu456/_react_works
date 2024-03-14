@@ -38,4 +38,8 @@
 }
 .card{
   gap: 10px;
+  margin: 10px;
+}
+::-webkit-scrollbar{
+  width: 0;
 }
