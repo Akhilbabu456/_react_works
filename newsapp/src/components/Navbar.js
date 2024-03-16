@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const Navbar = () => {
   return (
     <nav
-      className="navbar navbar-expand-lg bg-body-tertiary position-sticky"
+      className="navbar fixed-top navbar-expand-lg bg-body-tertiary position-sticky"
       data-bs-theme="dark"
     >
       <div className="container-fluid">
