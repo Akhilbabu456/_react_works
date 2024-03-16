@@ -1,87 +1,69 @@
-import React, { Component } from "react";
+import React, {useEffect, useState} from "react";
 import NewsItem from "./NewsItem";
 import Spinner from "./Spinner";
 import PropTypes from "prop-types";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-export class News extends Component {
-  static defaultProps = {
-    country: "in",
-    pageSize: 8,
-    category: "general",
-    search: "",
-  };
-  static propsTypes = {
-    country: PropTypes.string,
-    pageSize: PropTypes.number,
-    category: PropTypes.string,
-    search: PropTypes.string,
-  };
-  capitalizeFirstLetter = (string) => {
+const News =(props)=> {
+  const [articles, setArticles] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [page, setPage] = useState(1)
+  const [totalResults, setTotalResults] = useState(0)
+  const [search, setSearch] = useState("")
+
+  const capitalizeFirstLetter = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
-  constructor(props) {
-    super(props);
-    this.state = {
-      articles: [],
-      loading: false,
-      page: 1,
-      search: "",
-      totalResults: 0,
-    };
-    this.search = React.createRef();
-    document.title = `${this.capitalizeFirstLetter(
-      this.props.category
-    )} - NewsMonkey`;
-  }
 
-  async updateNews() {
-    this.props.setProgress(10);
-    const url = `https://newsapi.org/v2/top-headlines?q=${this.state.search}&country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&page=${this.state.page}&pageSize=${this.props.pageSize}`;
-    this.setState({ loading: true });
+  document.title = `${capitalizeFirstLetter(
+    props.category
+  )} - NewsMonkey`;
+
+  const updateNews= async()=> {
+    props.setProgress(10);
+    const url = `https://newsapi.org/v2/top-headlines?q=${search}&country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page}&pageSize=${props.pageSize}`;
+    setLoading(true)
     let data = await fetch(url);
-    this.props.setProgress(30);
+    props.setProgress(30);
     let parseData = await data.json();
-    this.props.setProgress(70);
-    this.setState({
-      articles: parseData.articles,
-      totalResults: parseData.totalResults,
-      loading: false,
-    });
-    this.props.setProgress(100);
-  }
-  async componentDidMount() {
-    this.updateNews();
+    props.setProgress(70);
+    setArticles(parseData.articles)
+    setTotalResults(parseData.totalResults)
+    setLoading(false)
+    props.setProgress(100);
   }
 
-  handleSubmit = (event) => {
+  useEffect(() => {
+    updateNews();
+  }, [])
+  
+
+  const handleSubmit = (event) => {
     event.preventDefault();
-    this.updateNews();
+    updateNews();
   };
 
-  fetchMoreData = async () => {
-    this.setState({ page: this.state.page + 1 });
-    const url = `https://newsapi.org/v2/top-headlines?q=${this.state.search}&country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&page=${this.state.page}&pageSize=${this.props.pageSize}`;
+  const fetchMoreData = async () => {
+    setPage(page + 1 );
+    const url = `https://newsapi.org/v2/top-headlines?q=${search}&country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page}&pageSize=${props.pageSize}`;
     let data = await fetch(url);
     let parseData = await data.json();
-    this.setState({
-      articles: this.state.articles.concat(parseData.articles),
-      totalResults: parseData.totalResults,
-    });
+    setArticles(articles.concat(parseData.articles))
+    setTotalResults(parseData.totalResults)
   };
 
-  render() {
+
     return (
       <div className="container my-3">
         <h1 className="text-center" style={{ margin: "40px 0px" }}>
-          NewsMonkey - Top {this.capitalizeFirstLetter(this.props.category)}{" "}
+          NewsMonkey - Top {capitalizeFirstLetter(props.category)}{" "}
           Headlines
         </h1>
         <form
           className="d-flex my-4 col-lg-6"
           role="search"
           style={{ margin: "auto" }}
-          onSubmit={this.handleSubmit}
+          onSubmit={handleSubmit}
         >
           <input
             className="form-control me-2"
@@ -89,24 +71,24 @@ export class News extends Component {
             placeholder="Search"
             aria-label="Search"
             name="search"
-            value={this.state.search}
+            value={search}
             onChange={(event) => {
-              this.setState({ search: event.target.value });
+              setSearch(event.target.value);
             }}
           />
           <button className="btn btn-outline-primary" type="submit">
             Search
           </button>
         </form>
-        {this.state.loading && <Spinner />}
+        {loading && <Spinner />}
         <InfiniteScroll
-          dataLength={this.state.articles.length}
-          next={this.fetchMoreData}
-          hasMore={this.state.articles.length !== this.state.totalResults}
-          loader={this.state.loading && <Spinner />}
+          dataLength={articles.length}
+          next={fetchMoreData}
+          hasMore={articles.length !== totalResults}
+          loader={loading && <Spinner />}
         >
           <div className="row">
-            {this.state.articles.map((element) => {
+            {articles.map((element) => {
               return (
                 <div
                   className=" col-xs-12 col-sm-12 col-md-6 col-lg-4"
@@ -132,7 +114,20 @@ export class News extends Component {
         </InfiniteScroll>
       </div>
     );
-  }
+  
 }
+
+News.defaultProps = {
+  country: "in",
+  pageSize: 8,
+  category: "general",
+  search: "",
+};
+News.propsTypes = {
+  country: PropTypes.string,
+  pageSize: PropTypes.number,
+  category: PropTypes.string,
+  search: PropTypes.string,
+};
 
 export default News;
