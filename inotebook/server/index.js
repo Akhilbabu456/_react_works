@@ -1,6 +1,7 @@
 const connectToMongo = require("./config/db")
 const express= require("express")
 const dotenv = require("dotenv")
+const cors = require("cors")	
 
 const app = express()
 dotenv.config()
@@ -10,6 +11,7 @@ connectToMongo()
 const userRoute = require("./routes/user")
 const noteRoute = require("./routes/notes")
 
+app.use(cors())
 app.use(express.json())
 
 app.use("/api/auth", userRoute)
