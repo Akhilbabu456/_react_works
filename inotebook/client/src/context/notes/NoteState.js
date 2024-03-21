@@ -7,12 +7,13 @@ const NoteState = (props)=>{
     const [notes, setNotes] = useState(notesInitial)
    
     const getNotes = async()=>{
+      
       try {
         const response = await fetch(`${host}/api/notes/fetchnotes`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            "Authorization":`Bearer ${ localStorage.getItem("token")}`,
+            "Authorization": localStorage.getItem("token"),
           },
         });
     
@@ -31,7 +32,7 @@ const NoteState = (props)=>{
         method: "POST",
         headers: {
           "Content-Type": "application/json",	
-          "Authorization":`Bearer ${ localStorage.getItem("token")}`,
+          "Authorization": localStorage.getItem("token"),
         },
         body: JSON.stringify({title, description, tag})
       })
@@ -43,7 +44,7 @@ const NoteState = (props)=>{
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",	
-          "Authorization":`Bearer ${ localStorage.getItem("token")}`,
+          "Authorization": localStorage.getItem("token"),
         },
        
       })
@@ -58,7 +59,7 @@ const NoteState = (props)=>{
         method: "PUT",
         headers: {
           "Content-Type": "application/json",	
-          "Authorization":`Bearer ${ localStorage.getItem("token")}`,
+          "Authorization": localStorage.getItem("token"),
         },
         body: JSON.stringify({id,title, description, tag})
       })
