@@ -12,12 +12,12 @@ const NoteState = (props)=>{
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": localStorage.getItem("token"),
+            "Authorization":`Bearer ${ localStorage.getItem("token")}`,
           },
         });
     
         const json = await response.json();
-        if (response.ok) {
+        if (json) {
           setNotes(json);
         } else {
           throw new Error(json.error);
@@ -31,7 +31,7 @@ const NoteState = (props)=>{
         method: "POST",
         headers: {
           "Content-Type": "application/json",	
-          "Authorization": localStorage.getItem("token"),
+          "Authorization":`Bearer ${ localStorage.getItem("token")}`,
         },
         body: JSON.stringify({title, description, tag})
       })
@@ -43,7 +43,7 @@ const NoteState = (props)=>{
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",	
-          "Authorization": localStorage.getItem("token"),
+          "Authorization":`Bearer ${ localStorage.getItem("token")}`,
         },
        
       })
@@ -58,7 +58,7 @@ const NoteState = (props)=>{
         method: "PUT",
         headers: {
           "Content-Type": "application/json",	
-          "Authorization": localStorage.getItem("token"),
+          "Authorization":`Bearer ${ localStorage.getItem("token")}`,
         },
         body: JSON.stringify({id,title, description, tag})
       })

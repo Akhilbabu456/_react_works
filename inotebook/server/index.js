@@ -11,7 +11,7 @@ connectToMongo()
 const userRoute = require("./routes/user")
 const noteRoute = require("./routes/notes")
 
-app.use(cors())
+app.use(cors({origin: true}))
 app.use(express.json())
 
 app.use("/api/auth", userRoute)

@@ -21,7 +21,7 @@ const Login = (props) => {
       })
       const json = await response.json()
       console.log(json)
-      if(json.success){
+      if(json){
         localStorage.setItem('token', `Bearer ${json.token}`)
         props.showAlert("Successfully Logged in", "success")
         history("/")
