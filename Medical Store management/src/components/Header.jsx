@@ -1,9 +1,7 @@
-import { useRecoilValue } from "recoil";
-import userAtom from "../atoms/userAtom";
+
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Header() {
-  const user = useRecoilValue(userAtom)
   const navigate = useNavigate()
 
   const handleLogout = async()=>{

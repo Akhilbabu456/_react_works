@@ -1,8 +1,95 @@
+import { useEffect, useState } from "react";
 import {Link} from "react-router-dom"
 
+
 const TableCard = () => {
+  const [medicineList, setMedicineList] = useState([]);
+  const [search , setSearch] = useState("")
+  const [id, setId]= useState("")
+
+  const fetchMedicine = async()=>{
+     try{
+      let url = "https://medicalstore.mashupstack.com/api/medicine"
+       let res = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
+        },
+       })
+       let data = await res.json()
+       setMedicineList(data)
+     }catch(err){
+         console.log(err)
+     }
+  }
+
+  useEffect(()=>{
+    fetchMedicine()
+  },[])
+
+  const handleSearch = async() => {
+     try{
+        let url = `https://medicalstore.mashupstack.com/api/medicine/search?keyword=${search}`
+        let res = await fetch(url, {
+          method:"GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem("token")}`
+          }
+        })
+        let data = await res.json()
+        setMedicineList(data)
+     }catch(err){
+        console.log(err)
+     }
+  }
+
+  useEffect(() => {
+   
+    const timeout = setTimeout(() => {
+      handleSearch()
+    }, 500);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [search])
+
+  const handleId = (id)=>{
+    setId(id)
+  }
+
+  const handleDelete = async()=>{
+    try{
+       let url = `https://medicalstore.mashupstack.com/api/medicine/${id}`
+      let res = await fetch(url, {
+         method: "DELETE",
+         headers:{
+           "Content-Type": "application/json",
+           "Authorization" :`Bearer ${localStorage.getItem("token")}`
+         }
+       })
+       setMedicineList((prevMedicineData) =>
+       prevMedicineData.filter(
+         (medicine) => medicine.id !== id
+       )
+     );
+    }catch(err){
+      console.log(err)
+    }
+  }
+
+
+  
   return (
     <>
+     <form method="get" className="d-flex mb-4" role="search" id="search">
+            <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" style={{ width: "35%"}} name="search"
+            value={search} onChange={(e)=>setSearch(e.target.value)}
+            />
+           
+          </form>
        <div className="container">
        <div className="col d-flex justify-content-center justify-content-md-end align-items-center">
          <Link className="btn btn-primary mb-3" to="/users/add">
@@ -21,19 +108,28 @@ const TableCard = () => {
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>
-          <a href="/users/edit/:id" className="btn btn-secondary mx-2"><i className="bi bi-pencil-square"></i></a>
-      
-<button type="button" className="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{this._id}}" data-backdrop="false">
- <i className="bi bi-trash3"></i>
-</button>
-      </td>
-    </tr>
+    
+      {medicineList.map((medicine)=>{
+        return(
+          <>
+          <tr>
+          <th scope="row">{medicine.id}</th>
+          <td>{medicine.name}</td>
+          <td>{medicine.company}</td>
+          <td>{medicine.expiry_date}</td>
+          <td>
+              <Link to={`/users/edit/${medicine.id}`} className="btn btn-secondary mx-2"><i className="bi bi-pencil-square"></i></Link>
+          
+    <button type="button" className="btn btn-danger" onClick={()=>handleId(medicine.id)} data-bs-toggle="modal" data-bs-target="#exampleModal{{this._id}}" data-backdrop="false">
+     <i className="bi bi-trash3"></i>
+    </button>
+          </td>
+          </tr>
+          </>
+        )
+      })}
+    
+
   </tbody>
 </table>
        </div>
@@ -51,7 +147,7 @@ const TableCard = () => {
       </div>
       <div className="modal-footer">
         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <a href="/user/remove/{{this._id}}" className="btn btn-danger">Delete</a>
+        <button className="btn btn-danger" onClick={handleDelete} >Delete</button>
       </div>
     </div>
   </div>

@@ -1,29 +1,97 @@
+import { Link, useNavigate, useParams } from "react-router-dom"
+import Header from "./Header"
+import {  useEffect, useState } from "react";
+// import { UserContext } from "../context/userContext";
 
 
 const UpdateCard = () => {
+  const [update, setUpdate] = useState({
+    name: "",
+    company:"",
+    expiry_date:""
+  })
+
+  const { id } = useParams();
+  // const { isLoggedIn } = useContext(UserContext);
+  const navigate = useNavigate();
+
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/");
+    } else {
+      const getMedicineData = async () => {
+        try {
+        
+          const response = await fetch(
+            `https://medicalstore.mashupstack.com/api/medicine/${id}`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+              },
+            }
+          );
+         
+          let data = await response.json()
+          console.log(data)
+          setUpdate(data)
+        } catch (err) {
+          
+          console.log(err);
+        }
+      };
+
+      getMedicineData();
+    }
+  }, [id, token, navigate]);
+
+
+  const handleUpdate = async(e)=>{
+    e.preventDefault()
+      let url = `https://medicalstore.mashupstack.com/api/medicine/${id}`
+      let res = await fetch(url,{
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json",
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
+        },
+        body:JSON.stringify(update)
+      })
+       await res.json()
+      navigate("/users")
+  }
+
 
 
   return (
     <div>
+      <Header/>
       <div className="container1">
         <div className="forms-container">
           <div className="signin-signup">
-            <form action="#" className="sign-in-form">
+            <form action="#" className="sign-in-form" >
               <h2 className="title">Update Medicine</h2>
               <div className="input-field">
                 <i className="fas fa-user"></i>
-                <input type="text" placeholder="Medicine name" />
+                <input type="text" placeholder="Medicine name" value={update.name} 
+                onChange={(e) => setUpdate({ ...update, name: e.target.value })}
+                />
               </div>
               <div className="input-field">
                 <i className="fas fa-user"></i>
-                <input type="text" placeholder="Company" />
+                <input type="text" placeholder="Company" value={update.company} 
+                onChange={(e) => setUpdate({ ...update, company: e.target.value })} />
               </div>
               <div className="input-field">
                 <i className="fas fa-user"></i>
-                <input type="date" placeholder="Date" />
+                <input type="date" placeholder="Date" value={update.expiry_date} 
+                onChange={(e) => setUpdate({ ...update, expiry_date: e.target.value })} />
               </div>
 
-              <input type="submit" value="Update" className="btn1" />
+              <input type="submit" value="Update" className="btn1" onClick={handleUpdate} />
 
             </form>
           </div>
@@ -33,7 +101,8 @@ const UpdateCard = () => {
         <div className="panels-container">
           <div className="panel left-panel">
             <div className="content">
-
+            <h3>Want to go Back</h3>
+            <Link to="/users" className="btn btn-dark justify-content-end"> Back</Link>
             </div>
             <img src="/register.svg" className="image" alt="" />
           </div>

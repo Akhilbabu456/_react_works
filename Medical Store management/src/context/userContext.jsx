@@ -2,9 +2,10 @@ import { createContext, useEffect, useState } from "react";
 
 export const UserContext = createContext();
 
-const UserProvider = ({ children }) => {
+const UserProvider = ({children}) => {
+  console.log(localStorage.getItem("token"))
   const [isLoggedIn, setIsLoggedIn] = useState(
-    JSON.parse(localStorage.getItem("token"))
+    // JSON.parse(localStorage.getItem("token"))
   );
 
   useEffect(() => {
