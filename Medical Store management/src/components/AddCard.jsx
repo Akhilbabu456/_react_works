@@ -1,16 +1,31 @@
 import { Link, useNavigate } from "react-router-dom"
 import Header from "./Header"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { useToast } from "@chakra-ui/react"
 
 
 
 const AddCard = () => {
+  let user = localStorage.getItem("token")
   const navigate = useNavigate()
  const [medicine, setMedicine] = useState({
    name: "",
    company: "",
    expiry_date: ""
  })
+ const toast = useToast()
+
+ useEffect(() => {
+  if(!user){
+    navigate("/")
+    toast({
+      title: "Unauthorized",
+      status: "error",
+      duration: 2500,
+      isClosable: true,
+    })
+  }
+ }, [user,navigate,toast])
 
  const handleAddMed = async(e) => {
    e.preventDefault()
@@ -23,9 +38,26 @@ const AddCard = () => {
      },
      body: JSON.stringify(medicine),
    })
-   let data = await res.json()
-   console.log(data)
-   navigate("/users")
+    await res.json()
+   if(res.status === 200){
+      toast({
+        title: "Medicine added successfully",
+        status: "success",
+        duration: 2500,
+        isClosable: true,
+        position: "bottom"
+      })
+      navigate("/users")
+   }else{
+     toast({
+      title: "Error Occured!",
+      description: "Failed to add the Medicine",
+      status: "error",
+      duration: 2500,
+      isClosable: true,
+      position: "bottom"
+    })
+   }
  }
 
   return (

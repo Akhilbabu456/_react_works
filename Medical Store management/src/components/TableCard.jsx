@@ -1,14 +1,21 @@
+import { useToast } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import {Link} from "react-router-dom"
+import {Link, useNavigate} from "react-router-dom"
+import Loader from "./Loader";
 
 
 const TableCard = () => {
+  let user = localStorage.getItem("token");
   const [medicineList, setMedicineList] = useState([]);
   const [search , setSearch] = useState("")
   const [id, setId]= useState("")
+  const [loading, setLoading] = useState(false)
+  const navigate = useNavigate()
+  let toast = useToast()
 
   const fetchMedicine = async()=>{
      try{
+      setLoading(true)
       let url = "https://medicalstore.mashupstack.com/api/medicine"
        let res = await fetch(url, {
         method: "GET",
@@ -18,6 +25,7 @@ const TableCard = () => {
         },
        })
        let data = await res.json()
+       setLoading(false)
        setMedicineList(data)
      }catch(err){
          console.log(err)
@@ -25,10 +33,20 @@ const TableCard = () => {
   }
 
   useEffect(()=>{
+    if(!user){
+      navigate("/")
+      toast({
+        title: "Unauthorized",
+        status: "error",
+        duration: 2500,
+        isClosable: true,
+      })
+    }
     fetchMedicine()
   },[])
 
   const handleSearch = async() => {
+    setLoading(true)
      try{
         let url = `https://medicalstore.mashupstack.com/api/medicine/search?keyword=${search}`
         let res = await fetch(url, {
@@ -39,6 +57,7 @@ const TableCard = () => {
           }
         })
         let data = await res.json()
+        setLoading(false)
         setMedicineList(data)
      }catch(err){
         console.log(err)
@@ -61,6 +80,7 @@ const TableCard = () => {
   }
 
   const handleDelete = async()=>{
+    setLoading(true)
     try{
        let url = `https://medicalstore.mashupstack.com/api/medicine/${id}`
       let res = await fetch(url, {
@@ -70,11 +90,20 @@ const TableCard = () => {
            "Authorization" :`Bearer ${localStorage.getItem("token")}`
          }
        })
-       setMedicineList((prevMedicineData) =>
-       prevMedicineData.filter(
-         (medicine) => medicine.id !== id
-       )
-     );
+       if(res.ok){
+         toast({
+          title: "Deleted",
+          description: "Medicine Deleted Successfully",
+          status: "success",
+          duration: 2500,
+          isClosable: true,
+        })
+        setLoading(false)
+        setMedicineList((prevMedicineData) =>
+        prevMedicineData.filter(
+          (medicine) => medicine.id !== id
+        ));
+      }
     }catch(err){
       console.log(err)
     }
@@ -84,12 +113,15 @@ const TableCard = () => {
   
   return (
     <>
+    
      <form method="get" className="d-flex mb-4" role="search" id="search">
             <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" style={{ width: "35%"}} name="search"
             value={search} onChange={(e)=>setSearch(e.target.value)}
             />
            
           </form>
+       {loading && <Loader/>}
+
        <div className="container">
        <div className="col d-flex justify-content-center justify-content-md-end align-items-center">
          <Link className="btn btn-primary mb-3" to="/users/add">
@@ -147,7 +179,7 @@ const TableCard = () => {
       </div>
       <div className="modal-footer">
         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button className="btn btn-danger" onClick={handleDelete} >Delete</button>
+        <button className="btn btn-danger" onClick={handleDelete} data-bs-dismiss="modal">Delete</button>
       </div>
     </div>
   </div>

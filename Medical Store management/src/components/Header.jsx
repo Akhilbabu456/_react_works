@@ -1,8 +1,10 @@
 
+import { useToast } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Header() {
   const navigate = useNavigate()
+  let toast = useToast()
 
   const handleLogout = async()=>{
     const url = "https://medicalstore.mashupstack.com/api/logout"
@@ -13,10 +15,17 @@ export default function Header() {
         "Authorization": `Bearer ${localStorage.getItem("token")}`
       }
     })
-    const data = await res.json()
-    console.log(data)
-    localStorage.removeItem("token")
-    navigate("/")
+     await res.json()
+    if(res.ok){
+      navigate("/")
+      localStorage.removeItem("token")
+      toast({
+        title: "Logout Successfully",
+        status: "success",
+        duration: 2500,
+        isClosable: true,
+      })
+    }
   }
   return (
     <>

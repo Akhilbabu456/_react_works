@@ -1,5 +1,5 @@
 
-import { Route, Routes } from 'react-router-dom'
+import {  Route, Routes } from 'react-router-dom'
 import './App.css'
 
 import AuthPage from './pages/AuthPage'
@@ -8,8 +8,9 @@ import AddCard from './components/AddCard'
 import UpdateCard from './components/UpdateCard'
 
 
+
 function App() {
-  
+ 
 
   return (
     <>

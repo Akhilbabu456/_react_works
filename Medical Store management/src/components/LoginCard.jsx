@@ -1,4 +1,5 @@
 
+import { useToast } from '@chakra-ui/react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
   
@@ -16,24 +17,52 @@ import { useNavigate } from 'react-router-dom'
       password: "",
     })
     const navigate = useNavigate()
+    const toast = useToast()
 
     const handleSignUp =async(e)=>{
         e.preventDefault()
-        const url = "https://medicalstore.mashupstack.com/api/register"
-        const res = await fetch(url,{
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(signUp),
-        })
-        let data = await res.json()
-        localStorage.setItem("user-threads", JSON.stringify(data))
-        navigate("/users")
+        try{
+          const url = "https://medicalstore.mashupstack.com/api/register"
+          const res = await fetch(url,{
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(signUp),
+          })
+          let data = await res.json()
+          console.log(data)
+          if(res.status === 200){
+            navigate("/")
+            toast({
+              title: "Account created successfully",
+              status: "success",
+              duration: 2500,
+              isClosable: true,
+            })
+          }else{
+            if(data.errors.name || data.errors.email || data.errors.password || data.errors.password_confirmation){
+              toast({
+                title: `${data.errors.name || data.errors.email || data.errors.password || data.errors.password_confirmation}` ,
+                status: "error",
+                duration: 2500,
+                isClosable: true,
+              })
+            }
+           
+          }
+        }catch(err){
+          console.log(err)
+        
+           
+          
+        }
+        
     }
     
     const handleLogin =async(e)=>{
         e.preventDefault()
+      try{
         const url = "https://medicalstore.mashupstack.com/api/login"
         const res = await fetch(url,{
           method: "POST",
@@ -43,8 +72,28 @@ import { useNavigate } from 'react-router-dom'
           body: JSON.stringify(login),
         })
         let data = await res.json()
-        localStorage.setItem("token", data.token)
+       if(res.status === 200){
+         localStorage.setItem("token", data.token)
         navigate("/users")
+        toast({
+          title: "Logged in successfully",
+          status: "success",
+          duration: 2500,
+          isClosable: true,
+        })
+       }else{
+        console.log(data)
+              toast({
+                title: data.errors,
+                status: "error",
+                duration: 2500,
+                isClosable: true,
+              })
+       } 
+      }catch(err){
+        console.log(err)
+      }
+          
     }
   
     return (
