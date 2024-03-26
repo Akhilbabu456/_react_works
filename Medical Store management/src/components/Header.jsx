@@ -50,13 +50,11 @@ export default function Header() {
               </li>
             </ul>
 
-           { user && <> <Link className="mx-3" to="/users">
+          <Link className="mx-3" to="/users">
               Home
             </Link>
             <br />
-            <Link className="btn btn-primary mx-3" to="/users/add">
-              Add Stock <i className="bi bi-plus-circle"></i>
-            </Link>
+           
             <div className="dropdown-center mx-3">
               <button
                 className="btn btn-secondary text-light "
@@ -66,7 +64,7 @@ export default function Header() {
                 LogOut
               </button>
 
-            </div></>}
+            </div>
           </div>
         </div>
       </nav>

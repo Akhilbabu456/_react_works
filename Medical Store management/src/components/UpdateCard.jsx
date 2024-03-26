@@ -1,16 +1,15 @@
 
 
-
-const AddCard = () => {
+const UpdateCard = () => {
 
 
   return (
     <div>
-      <div className="container1 ">
+      <div className="container1">
         <div className="forms-container">
           <div className="signin-signup">
             <form action="#" className="sign-in-form">
-              <h2 className="title">Add Medicine</h2>
+              <h2 className="title">Update Medicine</h2>
               <div className="input-field">
                 <i className="fas fa-user"></i>
                 <input type="text" placeholder="Medicine name" />
@@ -24,19 +23,19 @@ const AddCard = () => {
                 <input type="date" placeholder="Date" />
               </div>
 
-              <input type="submit" value="Add Medicine" className="btn1 solid" />
+              <input type="submit" value="Update" className="btn1" />
 
             </form>
-
           </div>
         </div>
+
 
         <div className="panels-container">
           <div className="panel left-panel">
             <div className="content">
 
             </div>
-            <img src="/log.svg" className="image" alt="" />
+            <img src="/register.svg" className="image" alt="" />
           </div>
 
         </div>
@@ -48,4 +47,5 @@ const AddCard = () => {
 
 
 
-export default AddCard
+export default UpdateCard
+
