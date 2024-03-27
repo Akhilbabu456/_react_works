@@ -5,7 +5,7 @@ const Loader = ({size, color}) => {
   return (
     <div className="container">
       <div className="row loader">
-        <div className="col  d-flex align-items-center justify-content-center">
+        <div className="col  d-flex align-items-center justify-content-center p-2">
           <PropagateLoader	 size={size} color={color} />
         </div>
       </div>

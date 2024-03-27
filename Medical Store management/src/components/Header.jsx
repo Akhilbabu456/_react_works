@@ -69,7 +69,7 @@ export default function Header() {
            
             <div className="dropdown-center mx-3">
               <button
-                className="btn btn-secondary text-light "
+                className="btn btn-secondary text-light"
                 type="button"
                 onClick={handleLogout}
               >

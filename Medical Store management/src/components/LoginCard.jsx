@@ -2,9 +2,10 @@
 import { useToast } from '@chakra-ui/react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import Loader from './Loader'
   
   export default function LoginCard() {
-    
+    const [loading, setLoading] = useState(false)
     const [ authScreen,setAuthScreen] = useState("login")
     const [signUp, setSignUp] = useState({
        name: "",
@@ -21,6 +22,7 @@ import { useNavigate } from 'react-router-dom'
 
     const handleSignUp =async(e)=>{
         e.preventDefault()
+        setLoading(true)
         try{
           const url = "https://medicalstore.mashupstack.com/api/register"
           const res = await fetch(url,{
@@ -33,6 +35,7 @@ import { useNavigate } from 'react-router-dom'
           let data = await res.json()
           console.log(data)
           if(res.status === 200){
+            setLoading(false)
             navigate("/")
             toast({
               title: "Account created successfully",
@@ -41,6 +44,7 @@ import { useNavigate } from 'react-router-dom'
               isClosable: true,
             })
           }else{
+            setLoading(false)
             if(data.errors.name || data.errors.email || data.errors.password || data.errors.password_confirmation){
               toast({
                 title: `${data.errors.name || data.errors.email || data.errors.password || data.errors.password_confirmation}` ,
@@ -62,6 +66,7 @@ import { useNavigate } from 'react-router-dom'
     
     const handleLogin =async(e)=>{
         e.preventDefault()
+        setLoading(true)
       try{
         const url = "https://medicalstore.mashupstack.com/api/login"
         const res = await fetch(url,{
@@ -73,6 +78,7 @@ import { useNavigate } from 'react-router-dom'
         })
         let data = await res.json()
        if(res.status === 200){
+        setLoading(false)
          localStorage.setItem("token", data.token)
         navigate("/users")
         toast({
@@ -82,6 +88,7 @@ import { useNavigate } from 'react-router-dom'
           isClosable: true,
         })
        }else{
+        setLoading(false)
         console.log(data)
               toast({
                 title: data.errors,
@@ -112,9 +119,9 @@ import { useNavigate } from 'react-router-dom'
               <input type="password" placeholder="Password" value={login.password} 
               onChange={(e)=>setLogin({...login,password:e.target.value})}/>
             </div>
-            <input type="submit" value="Login" className="btn1 solid" 
+            <button className="btn1 solid" 
             onClick={handleLogin}
-            />
+            >{loading? <Loader size={8} color={"#fff"}/>: "Login"}</button>
             
           </form>
           <form action="#" className="sign-up-form">
@@ -140,9 +147,9 @@ import { useNavigate } from 'react-router-dom'
               <input type="password" placeholder="Confirm Password" value={signUp.password_confirmation} 
               onChange={(e)=>setSignUp({...signUp,password_confirmation:e.target.value})}/>
             </div>
-            <input type="submit" className="btn1" value="Sign up" 
+            <button  className="btn1"  
             onClick={handleSignUp}
-            />
+            >{loading? <Loader size={8} color={"#fff"}/>: "SignUp"}</button>
            
           </form>
         </div>
