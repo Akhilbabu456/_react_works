@@ -123,12 +123,12 @@ const TableCard = () => {
        {loading && <Loader/>}
 
        <div className="container">
+        <h1 className="heading">Medicine List</h1>
        <div className="col d-flex justify-content-center justify-content-md-end align-items-center">
          <Link className="btn btn-primary mb-3" to="/users/add">
               Add Stock <i className="bi bi-plus-circle"></i>
             </Link>
        </div>
-        
           <table className="table">
   <thead>
     <tr>

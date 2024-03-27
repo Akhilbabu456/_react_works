@@ -100,7 +100,7 @@ const AddCard = () => {
               <h3>Want to go Back</h3>
             <Link to="/users" className="btn btn-dark justify-content-end"> Back</Link>
             </div>
-            <img src="/log.svg" className="image" alt="" />
+            <img src="/add.png" className="image" alt="" />
           </div>
 
         </div>

@@ -134,7 +134,7 @@ const UpdateCard = () => {
             <h3>Want to go Back</h3>
             <Link to="/users" className="btn btn-dark justify-content-end"> Back</Link>
             </div>
-            <img src="/register.svg" className="image" alt="" />
+            <img src="/update.png" className="image" alt="" />
           </div>
 
         </div>
