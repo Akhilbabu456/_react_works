@@ -1,12 +1,16 @@
 
 import { useToast } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
+import Loader from "./Loader";
+import { useState } from "react";
 
 export default function Header() {
   const navigate = useNavigate()
   let toast = useToast()
+  const [loading, setLoading] = useState(false)
 
   const handleLogout = async()=>{
+    setLoading(true)
     const url = "https://medicalstore.mashupstack.com/api/logout"
     const res = await fetch(url,{
       method: "POST",
@@ -17,6 +21,7 @@ export default function Header() {
     })
      await res.json()
     if(res.ok){
+      setLoading(false)
       navigate("/")
       localStorage.removeItem("token")
       toast({
@@ -68,7 +73,7 @@ export default function Header() {
                 type="button"
                 onClick={handleLogout}
               >
-                LogOut
+                {loading? <Loader size={5} color={"#fff"}/>: "Logout"}
               </button>
 
             </div>
