@@ -63,7 +63,7 @@ const UpdateCard = () => {
 
   const handleUpdate = async(e)=>{
     e.preventDefault()
-    
+     setLoading(true)
       let url = `https://medicalstore.mashupstack.com/api/medicine/${id}`
       let res = await fetch(url,{
         method:"POST",
@@ -75,6 +75,7 @@ const UpdateCard = () => {
       })
        await res.json()
        if(res.status===200){
+        setLoading(false)
            toast({
              title: "Medicine Updated",
              status: "success",
