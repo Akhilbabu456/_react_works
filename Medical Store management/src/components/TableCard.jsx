@@ -150,9 +150,9 @@ const TableCard = () => {
           <td>{medicine.company}</td>
           <td>{medicine.expiry_date}</td>
           <td>
-              <Link to={`/users/edit/${medicine.id}`} className="btn btn-secondary mx-2"><i className="bi bi-pencil-square"></i></Link>
+              <Link to={`/users/edit/${medicine.id}`} className="btn btn-secondary mx-1 my-1"><i className="bi bi-pencil-square"></i></Link>
           
-    <button type="button" className="btn btn-danger" onClick={()=>handleId(medicine.id)} data-bs-toggle="modal" data-bs-target="#exampleModal{{this._id}}" data-backdrop="false">
+    <button type="button" className="btn btn-danger mx-1 my-1" onClick={()=>handleId(medicine.id)} data-bs-toggle="modal" data-bs-target="#exampleModal{{this._id}}" data-backdrop="false">
      <i className="bi bi-trash3"></i>
     </button>
           </td>
