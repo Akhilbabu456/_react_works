@@ -101,7 +101,7 @@ const UpdateCard = () => {
       <div className="container1">
         <div className="forms-container">
           <div className="signin-signup">
-            {loading && <Loader/>}
+
             <form action="#" className="sign-in-form" >
               <h2 className="title">Update Medicine</h2>
               <div className="input-field">
@@ -121,7 +121,7 @@ const UpdateCard = () => {
                 onChange={(e) => setUpdate({ ...update, expiry_date: e.target.value })} />
               </div>
 
-             <button className="btn1" onClick={handleUpdate}>Update</button>
+             <button className="btn1" onClick={handleUpdate}>{loading? <Loader size={8} color={"#fff"}/>: "Update"}</button>
 
             </form>
           </div>

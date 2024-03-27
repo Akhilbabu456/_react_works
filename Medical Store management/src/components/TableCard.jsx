@@ -120,7 +120,7 @@ const TableCard = () => {
             />
            
           </form>
-       {loading && <Loader/>}
+       
 
        <div className="container">
         <h1 className="heading">Medicine List</h1>
@@ -139,7 +139,18 @@ const TableCard = () => {
       <th scope="col">Actions</th>
     </tr>
   </thead>
+  
   <tbody>
+  {loading && (
+                  
+                  <tr>
+                    <td colSpan={5}>
+                      <Loader />
+                    </td>
+                  </tr>
+               
+              )}
+
     
       {medicineList.map((medicine)=>{
         return(

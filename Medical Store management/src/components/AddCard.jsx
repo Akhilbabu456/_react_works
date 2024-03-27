@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom"
 import Header from "./Header"
 import { useEffect, useState } from "react"
 import { useToast } from "@chakra-ui/react"
+import Loader from "./Loader"
 
 
 
@@ -13,6 +14,7 @@ const AddCard = () => {
    company: "",
    expiry_date: ""
  })
+ const [loading, setLoading] = useState(false)
  const toast = useToast()
 
  useEffect(() => {
@@ -29,6 +31,7 @@ const AddCard = () => {
 
  const handleAddMed = async(e) => {
    e.preventDefault()
+   setLoading(true)
    const url = "https://medicalstore.mashupstack.com/api/medicine"
    const res = await fetch(url,{
      method: "POST",
@@ -39,6 +42,7 @@ const AddCard = () => {
      body: JSON.stringify(medicine),
    })
     await res.json()
+    setLoading(false)
    if(res.status === 200){
       toast({
         title: "Medicine added successfully",
@@ -87,7 +91,7 @@ const AddCard = () => {
                 onChange={(e)=>{setMedicine({...medicine,expiry_date: e.target.value})}}/>
               </div>
 
-              <input type="submit" value="Add Medicine" className="btn1 solid" />
+              <button className="btn1 solid" onClick={handleAddMed}>{loading? <Loader size={8} color={"#fff"}/>: "Add Medicine"}</button>
 
             </form>
 
