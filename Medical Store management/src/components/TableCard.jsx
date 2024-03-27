@@ -115,7 +115,7 @@ const TableCard = () => {
     <>
     
      <form method="get" className="d-flex mb-4" role="search" id="search">
-            <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" style={{ width: "35%"}} name="search"
+            <input className="searchin"  type="search" placeholder="Search" aria-label="Search" style={{ width: "35%"}} name="search"
             value={search} onChange={(e)=>setSearch(e.target.value)}
             />
            

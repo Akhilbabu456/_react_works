@@ -160,7 +160,7 @@ import { useNavigate } from 'react-router-dom'
               Sign up
             </button>
           </div>
-          <img src="/log.svg" className="image" alt="" />
+          <img src="/login.png" className="image" alt="" />
         </div>
         <div className="panel right-panel">
           <div className="content">
@@ -173,7 +173,7 @@ import { useNavigate } from 'react-router-dom'
               Sign in
             </button>
           </div>
-          <img src="/register.svg" className="image" alt="" />
+          <img src="/register.png" className="image" alt="" />
         </div>
       </div>
     </div>
